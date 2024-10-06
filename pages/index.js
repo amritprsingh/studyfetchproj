@@ -21,7 +21,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Explain Like I'm 5</h1>
+      <h1>Explain Like I&apos;m 5</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

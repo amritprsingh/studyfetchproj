@@ -1,15 +1,15 @@
 import { useState } from "react";
-import Link from "next/link"; // Import the Link component
+import Link from "next/link";
 
 export default function Home() {
   const [topic, setTopic] = useState("");
   const [name, setName] = useState("");
   const [explanation, setExplanation] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true when submitting
+    setLoading(true);
     const res = await fetch("/api/explain", {
       method: "POST",
       headers: {
@@ -20,7 +20,7 @@ export default function Home() {
 
     const data = await res.json();
     setExplanation(data.explanation);
-    setLoading(false); // Set loading to false when response is received
+    setLoading(false);
   };
 
   return (
@@ -46,12 +46,12 @@ export default function Home() {
       <h2 style={{ textAlign: "center", fontWeight: "0", color: "blue" }}>
         Learn about any topic in the simplest way possible
       </h2>
-      {/* Link styled as a button */}
+
       <div style={{ marginTop: "20px", marginBottom: "2%" }}>
         <Link href="/catalog" passHref>
           <button
             style={{
-              width: "15%", // Make button a bit wider to match input
+              width: "15%",
               paddingBottom: "10px",
               paddingTop: "10px",
               fontSize: "1rem",
@@ -86,7 +86,7 @@ export default function Home() {
               height: "40px",
               padding: "10px",
               fontSize: "1.5rem",
-            }} // Adjust size and style
+            }}
           />
           <input
             type="text"
@@ -98,13 +98,13 @@ export default function Home() {
               height: "40px",
               padding: "10px",
               fontSize: "1.5rem",
-            }} // Adjust size and style
+            }}
           />
         </div>
         <button
           type="submit"
           style={{
-            width: "20%", // Make button a bit wider to match input
+            width: "20%",
             paddingBottom: "10px",
             paddingTop: "10px",
             fontSize: "1.5rem",
@@ -114,10 +114,9 @@ export default function Home() {
             cursor: "pointer",
             borderRadius: "50px",
           }}
-          disabled={loading} // Disable button while loading
+          disabled={loading}
         >
           {loading ? "Loading..." : "Get Explanation"}{" "}
-          {/* Change button text based on loading state */}
         </button>
       </form>
       <h2>Explanation:</h2>
@@ -131,18 +130,16 @@ export default function Home() {
               textAlign: "left",
             }}
           >
-            {/* Split explanation by '•' and handle bullets properly */}
             {(() => {
               const explanationParts = explanation.split("•");
               const sentences = explanationParts
                 .join("•")
                 .split(/(?<=[.!?])\s+/);
 
-              const lastSentence = sentences.pop(); // Remove the last sentence
+              const lastSentence = sentences.pop();
 
               return (
                 <>
-                  {/* Display the explanation up to the last sentence */}
                   {sentences
                     .join(" ")
                     .split("•")
@@ -152,8 +149,8 @@ export default function Home() {
                         <br />
                       </span>
                     ))}
-                  {/* Add newline before the last sentence */}
-                  {lastSentence.trim()} {/* Display the last sentence */}
+
+                  {lastSentence.trim()}
                 </>
               );
             })()}

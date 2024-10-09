@@ -4,7 +4,6 @@ export default function ExplanationsPage() {
   const [explanations, setExplanations] = useState([]);
 
   useEffect(() => {
-    // Fetch data from the API route
     const fetchExplanations = async () => {
       const res = await fetch("/api/explanations");
       const data = await res.json();

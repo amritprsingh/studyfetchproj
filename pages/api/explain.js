@@ -1,4 +1,4 @@
-import axios from "axios"; // Import axios
+import axios from "axios";
 import connectToDatabase from "../../lib/mongodb";
 import Explanation from "../../models/Explanation";
 
@@ -7,28 +7,25 @@ export default async function handler(req, res) {
     const { topic, name } = req.body;
 
     try {
-      // Call the Anthropic API with proper headers and prompt formatting
       const response = await axios.post(
         "https://api.anthropic.com/v1/complete",
         {
           prompt: `\n\nHuman: Explain the topic "${topic}" like I'm 5 years old.\n\nAssistant:`,
-          model: "claude-v1", // Model name
-          max_tokens_to_sample: 500, // Adjusted for longer responses
-          temperature: 0.7, // Adjust if needed
+          model: "claude-v1",
+          max_tokens_to_sample: 500,
+          temperature: 0.7,
         },
         {
           headers: {
             "x-api-key": process.env.ANTHROPIC_API_KEY,
             "Content-Type": "application/json",
-            "anthropic-version": "2023-01-01", // Ensure correct version
+            "anthropic-version": "2023-01-01",
           },
         }
       );
 
-      // Extract the explanation from the response
       const explanation = response.data.completion;
 
-      // Connect to MongoDB and save the result
       if (explanation && explanation.trim()) {
         await connectToDatabase();
         if (!explanation.trim().startsWith("I apologize")) {
@@ -36,7 +33,6 @@ export default async function handler(req, res) {
           await newExplanation.save();
         }
 
-        // Respond with the explanation
         res.status(200).json({ explanation });
       } else {
         res
